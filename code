@@ -1,0 +1,40 @@
+function sudokuSolver(board) {
+  for (let row = 0; row < board.length; row++) {
+    for (let col = 0; col < board[row].length; col++) {
+      if (board[row][col] === 0) {
+        for (let num = 1; num <= 9; num++) {
+          if (isValid(board, row, col, num)) {
+            board[row][col] = num;
+            if (sudokuSolver(board)) {
+              return true;
+            } else {
+              board[row][col] = 0;
+            }
+          }
+        }
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function isValid(board, row, col, num) {
+  for (let i = 0; i < 9; i++) {
+    if (board[row][i] === num || board[i][col] === num) {
+      return false;
+    }
+  }
+
+  let rowStart = Math.floor(row / 3) * 3;
+  let colStart = Math.floor(col / 3) * 3;
+
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (board[rowStart + i][colStart + j] === num) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
